@@ -1,0 +1,130 @@
+/*
+Autor: Edgar Morales
+Versión: 1.0
+
+Paleta de colores:
+
+  Guinda: #4A001F
+  Rosa claro: #FFC3D0
+  Morado: #6A0F49
+  Gris: #6D807F
+
+*/
+
+@font-face {
+  font-family: 'Gibson-Regular';
+  src: url('../fonts/Gibson/Gibson-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gibson-Bold';
+  src: url('../fonts/Gibson/Gibson-Bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Gibson-Regular','Gibson-Bold', sans-serif;
+}
+
+.navbar-white {
+  background-color: #6A0F49 !important;
+  color: #fff !important;
+}
+
+.navbar-nav .nav-link {
+  color: white !important;
+}
+
+[class*=sidebar-light] .brand-link {
+  background-color: #6A0F49 !important;
+  color: #fff !important;
+}
+
+.sidebar-light-danger .nav-sidebar>.nav-item>.nav-link.active {
+  background-color: #6A0F49 !important;
+  color: #fff !important;
+}
+
+table thead th {
+  background-color: #6A0F49 !important;
+  color: #fff !important;
+  font-weight: normal;
+}
+
+.btn-primary {
+  background-color: #6A0F49 !important;
+  border-color: #6A0F49 !important;
+  color: white !important;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background-color: #6D807F !important;
+  border-color: #6D807F !important;
+  color: white !important;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.btn-tertiary {
+  background-color: #FFC3D0 !important;
+  border-color: #FFC3D0 !important;
+  color: #6A0F49 !important;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.bg-primary {
+  background-color: #6A0F49 !important;
+  color: #fff !important;
+}
+
+.bg-secondary {
+  background-color: #6D807F !important;
+  color: #fff !important;
+}
+
+.card-primary.card-outline {
+  border-top: 3px solid #6A0F49 !important;
+}
+
+.bg-tertiary{
+  background-color: #FFC3D0!important;
+  color: #fff !important;
+}
+
+/* Afianzadoras */
+
+.content-btn{
+  text-align:right !important;
+}
+
+#title-form-dir{
+  border-top: 2px solid #6D807F!important;
+  margin: 1rem 0 1.5rem 0 !important;
+}
+
+#custom-form-group{
+  display: flex!important;
+  flex-direction: row;
+}
+
+#custom-form-group button{
+  background-color: #6A0F49!important;
+  border: 1px #6A0F49;
+  color: #fff;
+  margin-left: 1.5rem;
+}
+
+.dir-ref{
+  resize: none;
+}
+
+.group-btns{
+  justify-content: space-between;
+}
+
