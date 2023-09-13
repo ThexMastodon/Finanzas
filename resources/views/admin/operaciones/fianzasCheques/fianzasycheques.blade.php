@@ -119,7 +119,12 @@
       },
     }],
     order: [[0, 'desc']],
-    ajax: "{{ route('llenadoTableFianzasCheques') }}",
+    ajax: {
+        url: "{{ route('llenadoTableFianzasCheques') }}",
+        type: "POST", // Cambiamos el tipo de petición a POST
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Agregar el token CSRF si estás utilizando Laravel
+        }},
     columns: [{
         data: 'id',
         name: 'id',
