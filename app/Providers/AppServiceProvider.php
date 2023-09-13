@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
     {
       if ($this->app->environment('production')) {
         $this->app['request']->server->set('HTTPS','on');
-        URL::forceSchema('https');
+        URL::forceScheme('https');
     }
     }
 }
