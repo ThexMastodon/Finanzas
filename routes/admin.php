@@ -57,7 +57,7 @@ Route::controller(App\Http\Controllers\Fianza_chequeController::class)->group(fu
   Route::post('operaciones/fianza_cheques/calcular-fecha-vencimiento', 'calcularFechaVencimiento')->name('calcular-fecha-vencimiento');
   Route::get('/operaciones/descargar-excel', [App\Http\Controllers\Fianza_chequeController::class, 'exportaExcel'])->name('exportaExcelFiaCheq');
   Route::post('/operaciones/fianza_cheques/validarPestana1/', 'validarPestana1')->name('validarPestana1');
-  Route::get('/operaciones/fianza_cheques/llenadoTable', [App\Http\Controllers\Fianza_chequeController::class, 'llenadoTableFianzasCheques'])->name('llenadoTableFianzasCheques');
+  Route::post('/operaciones/fianza_cheques/llenadoTable', [App\Http\Controllers\Fianza_chequeController::class, 'llenadoTableFianzasCheques'])->name('llenadoTableFianzasCheques');
 });
 
 Route::controller(App\Http\Controllers\StatusController::class)->group(function () {
