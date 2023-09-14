@@ -35,7 +35,10 @@ class Fianza_chequeController extends Controller
 
   public function llenadoTableFianzasCheques(Request $request)
   {
+    try{
+
     if ($request->ajax()) {
+
       $query = Fianza_cheque::with([
         'afianzadoras' => function ($query) {
           $query->select('id', 'nombre');
@@ -74,7 +77,13 @@ class Fianza_chequeController extends Controller
         ->make(true);
       return $x;
     }
+  }catch(\Exception $e){
+    Log::error($e->getMessage());
+    return response()->json($e->getMessage(), 500);
   }
+  }
+
+
 
   public function exportaExcel()
   {
