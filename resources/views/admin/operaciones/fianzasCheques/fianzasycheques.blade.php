@@ -121,7 +121,7 @@
     order: [[0, 'desc']],
     ajax: {
         url: "{{ route('llenadoTableFianzasCheques') }}",
-        type: "POST", // Cambiamos el tipo de petición a POST
+        type: "GET", // Cambiamos el tipo de petición
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Agregar el token CSRF si estás utilizando Laravel
         }},
