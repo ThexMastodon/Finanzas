@@ -78,7 +78,7 @@ class Fianza_chequeController extends Controller
       return $x;
     }
   }catch(\Exception $e){
-    Log::error($e->getMessage());
+    Log::error('Fianza_chequeController@llenadoTableFianzasCheques '.$e);
     return response()->json($e->getMessage(), 500);
   }
   }
