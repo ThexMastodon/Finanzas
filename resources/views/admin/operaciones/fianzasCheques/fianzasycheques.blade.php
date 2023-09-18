@@ -160,7 +160,7 @@
         name: 'acciones',
       }
     ],
-    pageLength: 50,
+    pageLength: 10,
     language: {
       "decimal": "",
       "emptyTable": "No hay datos disponibles en la tabla",
