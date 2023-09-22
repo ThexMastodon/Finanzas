@@ -48,10 +48,12 @@
         </div>
         <input type="hidden" id="tipoPeticion" name="tipoPeticion" value="">
         <input type="hidden" name="" id="coloniaV" value="">
+        @can('Editar Colonia')
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-secondary " data-dismiss="modal">Cancelar</button>
           <button id="AceptarForm" type="button" class="btn btn-primary ">Aceptar</button>
         </div>
+        @endcan
       </div>
     </form>
   </div>

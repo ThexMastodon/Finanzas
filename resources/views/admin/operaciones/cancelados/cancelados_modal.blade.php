@@ -47,10 +47,12 @@
           </div>
     </form>
   </div>
+  @can('Editar Cancelados')
   <div class="modal-footer group-btns">
     <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="limpiarCampos()">Cancelar</button>
     <button id="AceptarForm" type="button" class="btn btn-primary">Aceptar</button>
   </div>
+  @endcan
 </div>
 </div>
 </div>
