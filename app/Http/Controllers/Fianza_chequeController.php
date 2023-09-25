@@ -16,7 +16,6 @@ use App\Models\Direccion;
 use App\Models\Estado;
 use App\Models\Municipio;
 use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Benchmark;
 
 class Fianza_chequeController extends Controller
 {
