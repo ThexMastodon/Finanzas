@@ -63,6 +63,12 @@
 
 @section('adminlte_js')
 @yield('modal_js')
+<style>
+  .cargando {
+    background-color: rgba(169, 169, 169, 0.85);
+    /* Gris transparente */
+  }
+</style>
 <script type="text/javascript">
   $('input[name="tipo_persona"]').on("change", function() {
     var selectedValue = $(this).val();
@@ -120,16 +126,19 @@
     }],
     order: [[0, 'desc']],
     ajax: {
-        url: "{{ route('llenadoTableFianzasCheques') }}",
-        type: "POST", // Cambiamos el tipo de petición
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Agregar el token CSRF si estás utilizando Laravel
-        },
-        error: function (xhr, textStatus, errorThrown) {
-            // Manejar el error de la solicitud AJAX
-            console.log(xhr);
-            alert("Error en la solicitud: " + xhr.responseJSON);
-        },},
+      url: "{{ route('llenadoTableFianzasCheques') }}",
+      type: "POST", // Cambiamos el tipo de petición
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Agregar el token CSRF si estás utilizando Laravel
+      },
+      beforeSend: function() {
+        var dt = $('#fianzasChequesTable').DataTable();
+        var settings = dt.settings();
+        if (settings[0].jqXHR) {
+          settings[0].jqXHR.abort();
+        }
+      },
+    },
 
     columns: [{
         data: 'id',
@@ -160,6 +169,14 @@
         name: 'acciones',
       }
     ],
+    preDrawCallback: function(settings) {
+
+      $('#fianzasChequesTable').addClass('cargando');
+    },
+    drawCallback: function(settings) {
+      // Elimina la clase de cargando después de que se complete la búsqueda
+      $('#fianzasChequesTable').removeClass('cargando');
+    },
     pageLength: 10,
     language: {
       "decimal": "",

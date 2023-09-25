@@ -33,54 +33,77 @@ class Fianza_chequeController extends Controller
     return view('admin.operaciones.fianzasCheques.fianzasycheques', ['municipios' => $municipios, 'estados' => $estados, 'afianzadoras' => $afianzadoras, 'estatus' => $estatus, 'tipos' => $tipos]);
   }
 
+  private function tableServerSide($query)
+  {
+    $x = DataTables::of($query)
+      ->addIndexColumn()
+      ->addColumn('afianzadora', function ($row) {
+        return $row->afianzadoras->nombre ?? '';
+      })
+      ->addColumn('importe', function ($row) {
+        return '$' . $row->importe ?? '';
+      })
+      ->addColumn('estatus', function ($row) {
+        return $row->estatus->descripcion;
+      })
+      ->addColumn('acciones', function ($row) {
+        $btn = '
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                              Acciones
+                            </button>
+
+                            <div class="dropdown-menu">
+                              <a id="btn-Editar" @can("Editar Fianzas y cheques") class="dropdown-item btn-edit" @else class="dropdown-item btn-edit disabled" @endcan href="' . route('detalleFianzaCheque', ['id' => $row->id]) . '" data-id=' . $row->id . ' data-target="#modal-edit" data-route="' . route('detalleFianzaCheque', ['id' => $row->id]) . '"><i class="fas fa-pencil-alt text-warning"></i> Editar</a>
+                            </div>
+            ';
+        return $btn;
+      })
+      ->rawColumns(['afianzadora', 'importe', 'estatus', 'acciones'])
+      ->make(true);
+    return $x;
+  }
+
   public function llenadoTableFianzasCheques(Request $request)
   {
-    try{
+    try {
 
-    if ($request->ajax()) {
+      if ($request->ajax()) {
 
-      $query = Fianza_cheque::with([
-        'afianzadoras' => function ($query) {
-          $query->select('id', 'nombre');
-        },
-        'estatus' => function ($query) {
-          $query->select('id', 'descripcion');
+        $query = Fianza_cheque::with([
+          'afianzadoras' => function ($query) {
+            $query->select('id', 'nombre');
+          },
+          'estatus' => function ($query) {
+            $query->select('id', 'descripcion');
+          }
+        ])->select('id', 'no_fianza_cheque', 'importe', 'fecha_expedicion', 'afianzadoras_id', 'estatus_id')
+          ->orderBy('id', 'desc')
+          ->get();
+
+
+        if ($request->input('search')['value'] != null) {
+          $x = $this->tableServerSide($query);
+          return $x;
         }
-      ])->select('id', 'no_fianza_cheque', 'importe', 'fecha_expedicion', 'afianzadoras_id', 'estatus_id')
-      ->orderby('id', 'desc')
-        ->get();
 
-      $x = DataTables::of($query)
-        ->addIndexColumn()
-        ->addColumn('afianzadora', function ($row) {
-          return $row->afianzadoras->nombre ?? '';
-        })
-        ->addColumn('importe', function ($row) {
-          return '$' . $row->importe ?? '';
-        })
-        ->addColumn('estatus', function ($row) {
-          return $row->estatus->descripcion;
-        })
-        ->addColumn('acciones', function ($row) {
-          $btn = '
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            Acciones
-                          </button>
+        $m = cache()->remember('consultaFianzaCheque_' . $request->input('start'), 300, function () use ($query) {
+          return $this->tableServerSide($query);
+        });
 
-                          <div class="dropdown-menu">
-                            <a id="btn-Editar" @can("Editar Fianzas y cheques") class="dropdown-item btn-edit" @else class="dropdown-item btn-edit disabled" @endcan href="' . route('detalleFianzaCheque', ['id' => $row->id]) . '" data-id='.$row->id.' data-target="#modal-edit" data-route="' . route('detalleFianzaCheque', ['id' => $row->id]) . '"><i class="fas fa-pencil-alt text-warning"></i> Editar</a>
-                          </div>
-          ';
-          return $btn;
-        })
-        ->rawColumns(['afianzadora', 'importe', 'estatus', 'acciones'])
-        ->make(true);
-      return $x;
+
+        if (cache()->has('consultaFianzaCheque_' . $request->input('start'))) {
+          $jsonResponse  = cache()->get('consultaFianzaCheque_' . $request->input('start'));
+          $responseData = json_decode($jsonResponse->getContent(), true);
+          $newDrawValue = $request->input('draw');
+          $responseData['draw'] = $newDrawValue;
+          $jsonUpdatedResponse = json_encode($responseData);
+          return \response()->json()->fromJsonString($jsonUpdatedResponse);
+        }
+      }
+    } catch (\Exception $e) {
+      Log::error('Fianza_chequeController@llenadoTableFianzasCheques ' . $e);
+      return response()->json($e->getMessage(), 500);
     }
-  }catch(\Exception $e){
-    Log::error('Fianza_chequeController@llenadoTableFianzasCheques '.$e);
-    return response()->json($e->getMessage(), 500);
-  }
   }
 
 
@@ -97,9 +120,20 @@ class Fianza_chequeController extends Controller
         'estatus' => function ($data) {
           $data->select('id', 'descripcion');
         }
-      ])->select('id', 'no_fianza_cheque', 'importe', 'fecha_expedicion',
-      'fecha_vencimiento','fecha_captura', 'a_favor','licitación','concepto','afianzadoras_id', 'estatus_id')
-      ->orderby('id', 'desc')
+      ])->select(
+        'id',
+        'no_fianza_cheque',
+        'importe',
+        'fecha_expedicion',
+        'fecha_vencimiento',
+        'fecha_captura',
+        'a_favor',
+        'licitación',
+        'concepto',
+        'afianzadoras_id',
+        'estatus_id'
+      )
+        ->orderby('id', 'desc')
         ->get();
       $dataExcel = $data->map(function ($item) {
         return [
@@ -273,18 +307,18 @@ class Fianza_chequeController extends Controller
       'required' => 'El campo no puede ir vacio',
     ];
 
-    if($request->nombreHistorico){
+    if ($request->nombreHistorico) {
       $request->validate([
         'nombreHistorico' => 'required',
       ], $customMessages);
-    }else{
+    } else {
       if ($request->tipo_persona == 1) {
         $request->validate([
           'nombre' => 'required',
           'APaterno' => 'required',
           'AMaterno' => 'required',
         ], $customMessages);
-      }else{
+      } else {
         $request->validate([
           'nombre' => 'required',
         ], $customMessages);
@@ -336,7 +370,7 @@ class Fianza_chequeController extends Controller
         $nuevoDireccionId = $direccionUpdate->id;
       }
 
-      if($request->direccion_historico){
+      if ($request->direccion_historico) {
         $direccionHistorico = $request->direccion_historico;
       }
 

@@ -80,6 +80,7 @@
             </div>
           </div>
         </div>
+        @can('Editar afianzadoras')
         <div class="modal-footer justify-content-between">
           <div>
             <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="limpiarCampos()">Cancelar</button>
@@ -88,6 +89,7 @@
             <button id="AceptarForm" type="button" class="btn btn-primary ml-auto">Aceptar</button>
           </div>
         </div>
+        @endcan
       </div>
     </form>
   </div>

@@ -220,6 +220,7 @@
           </div>
         </div>
         <input type="hidden" id="coloniaV">
+        @can('Editar Fianzas y cheques')
         <div class="modal-footer row m-0">
           <div class="col-md-6 text-left m-0">
             <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="limpiarCampos()">Cancelar</button>
@@ -228,6 +229,7 @@
             <button id="AceptarForm" type="button" class="btn btn-primary">Aceptar</button>
           </div>
         </div>
+        @endcan
       </div>
     </form>
 
