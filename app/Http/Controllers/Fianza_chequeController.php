@@ -76,7 +76,7 @@ class Fianza_chequeController extends Controller
           'estatus' => function ($query) {
             $query->select('id', 'descripcion');
           }
-        ])->select('id', 'no_fianza_cheque', 'importe', 'fecha_expedicion', 'afianzadoras_id', 'estatus_id')
+        ])->select('id', 'no_fianza_cheque', 'importe', 'fecha_captura', 'afianzadoras_id', 'estatus_id')
           ->orderBy('id', 'desc')
           ->get();
 

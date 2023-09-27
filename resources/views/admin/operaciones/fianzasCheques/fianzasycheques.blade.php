@@ -43,7 +43,7 @@
                         <th>Importe</th>
                         <th>Afianzadora</th>
                         <th>Estatus</th>
-                        <th>Fecha de creación</th>
+                        <th>Fecha de captura</th>
                         <th>Acciones</th>
                       </tr>
                     </thead>
@@ -154,8 +154,8 @@
         name: 'estatus',
       },
       {
-        data: 'fecha_expedicion',
-        name: 'fecha_expedicion',
+        data: 'fecha_captura',
+        name: 'fecha_captura',
       },
       {
         data: 'acciones',
