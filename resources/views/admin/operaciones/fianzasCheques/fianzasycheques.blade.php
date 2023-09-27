@@ -112,7 +112,7 @@
     theme: 'bootstrap4',
   });
 
-  $('#fianzasChequesTable').DataTable({
+  var table = $('#fianzasChequesTable').DataTable({
     processing: true,
     serverSide: true,
     buttons: [{
@@ -124,19 +124,12 @@
         columns: [0, 1, 2, 3]
       },
     }],
-    order: [[0, 'desc']],
+    ordering: false,
     ajax: {
       url: "{{ route('llenadoTableFianzasCheques') }}",
       type: "POST", // Cambiamos el tipo de petición
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Agregar el token CSRF si estás utilizando Laravel
-      },
-      beforeSend: function() {
-        var dt = $('#fianzasChequesTable').DataTable();
-        var settings = dt.settings();
-        if (settings[0].jqXHR) {
-          settings[0].jqXHR.abort();
-        }
       },
     },
 
@@ -201,6 +194,17 @@
         "sortAscending": ": activar para ordenar la columna ascendente",
         "sortDescending": ": activar para ordenar la columna descendente"
       }
+    }
+  });
+
+  $('#fianzasChequesTable_filter input').unbind();
+
+  $('#fianzasChequesTable_filter input').bind('keyup', function(e) {
+    if(this.value == ""){
+      table.search(this.value).draw();
+    }
+    if (e.keyCode == 13) {
+      table.search(this.value).draw();
     }
   });
 
