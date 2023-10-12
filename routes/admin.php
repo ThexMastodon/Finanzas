@@ -7,7 +7,7 @@ use App\Http\Controllers\Admin\HomeController;
 // Route::get('/afianzadoras', [App\Http\Controllers\AfianzadoraController::class, 'index'])->name('afianzadoras');
 
 Route::get('', [HomeController::class, 'index']);
-Route::get('/operaciones/fianzasycheques', [App\Http\Controllers\fianza_chequeController::class, 'index'])->name('fianzasycheques')->middleware('permission:Ver Fianzas y cheques');
+Route::get('/operaciones/fianzasycheques', [App\Http\Controllers\Fianza_chequeController::class, 'index'])->name('fianzasycheques')->middleware('permission:Ver Fianzas y cheques');
 Route::get('/password/admin', [\App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin.home');
 
 

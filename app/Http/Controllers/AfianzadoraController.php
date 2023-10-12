@@ -11,10 +11,12 @@ use App\Models\Estado;
 use App\Helpers\AddressHelper;
 use App\Models\Municipio;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\exportaExcel;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Route;
 
 class AfianzadoraController extends Controller
 {
@@ -83,7 +85,8 @@ class AfianzadoraController extends Controller
 
     try {
       $codigo_postal = $request->codigo_postal;
-      $colonias = AddressHelper::searchCP($codigo_postal);
+
+      $colonias = AddressHelper::searchColonias($codigo_postal);
 
       if (empty($colonias)) {
         $returnData = array(
