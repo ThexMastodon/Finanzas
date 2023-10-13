@@ -7,14 +7,19 @@ use App\Models\Direccion;
 use Illuminate\Http\Request;
 use App\Models\Colonia;
 use App\Models\Estado;
+use App\Models\ApiEstado;
+use App\Models\ApiMunicipio;
+use App\Models\ApiColonia;
 
 use App\Helpers\AddressHelper;
 use App\Models\Municipio;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\exportaExcel;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Route;
 
 class AfianzadoraController extends Controller
 {
@@ -23,8 +28,8 @@ class AfianzadoraController extends Controller
    */
   public function index()
   {
-    $estados = Estado::all();
-    $municipios = Municipio::all();
+    $estados = ApiEstado::all();
+    $municipios = ApiMunicipio::all();
 
     $afianzadoras = Afianzadora::with('direccion.colonia', 'direccion.municipio', 'direccion.estado')->get();
 
@@ -49,9 +54,9 @@ class AfianzadoraController extends Controller
           'no_exterior' => $item->direccion->no_exterior ?? '',
           'codigo_postal' => $item->direccion->codigo_postal ?? '',
           'referencia' => $item->direccion->referencia ?? '',
-          'colonia' => $item->direccion->colonia->colonia ?? '',
-          'municipio' => $item->direccion->municipio->nombre ?? '',
-          'estado' => $item->direccion->estado->nombre ?? '',
+          'colonia' => $item->direccion->colonia->descripcion ?? '',
+          'municipio' => $item->direccion->municipio->descripcion ?? '',
+          'estado' => $item->direccion->estado->descripcion ?? '',
         ];
       });
       $headers = ['ID', 'Nombre', 'Activo', 'Calle', 'No. Interior', 'No. Exterior', 'Código Postal', 'Referencia', 'Colonia', 'Municipio', 'Estado'];
@@ -83,7 +88,8 @@ class AfianzadoraController extends Controller
 
     try {
       $codigo_postal = $request->codigo_postal;
-      $colonias = AddressHelper::searchCP($codigo_postal);
+
+      $colonias = AddressHelper::searchColonias($codigo_postal);
 
       if (empty($colonias)) {
         $returnData = array(
@@ -108,13 +114,13 @@ class AfianzadoraController extends Controller
 
   public function getColonias(Request $request)
   {
-    $colonias = Colonia::where('municipio_id', $request->municipio)->get();
+    $colonias = ApiColonia::where('municipio_id', $request->municipio)->get();
     return response()->json($colonias);
   }
 
   public function getMunicipios(Request $request)
   {
-    $municipios = Municipio::where('estado_id', $request->estado)->get();
+    $municipios = ApiMunicipio::where('estado_id', $request->estado)->get();
     return response()->json($municipios);
   }
   /**
@@ -320,8 +326,7 @@ class AfianzadoraController extends Controller
   {
 
     if ($request->ajax()) {
-      $query = Afianzadora::with('direccion.colonia', 'direccion.municipio', 'direccion.estado')->get();
-
+      $query = Afianzadora::with('direccion.estado','direccion.municipio','direccion.colonia', )->get();
       $x = DataTables::of($query)
         ->addIndexColumn()
         ->addColumn('direccion', function ($row) {
@@ -329,16 +334,16 @@ class AfianzadoraController extends Controller
           if($row->direccion){
             $direccion = $row->direccion->calle . ' ' . $row->direccion->no_interior . ' ' . $row->direccion->no_exterior ;
             if($row->direccion->colonia_id){
-              $direccion .= ' ' . $row->direccion->colonia->colonia;
+              $direccion .= ' ' . $row->direccion->colonia->descripcion;
             }
             if($row->direccion->codigo_postal){
               $direccion .= ' ' . $row->direccion->codigo_postal;
             }
             if($row->direccion->municipio_id){
-              $direccion .= ' ' . $row->direccion->municipio->nombre;
+              $direccion .= ' ' . $row->direccion->municipio->descripcion;
             }
             if($row->direccion->estado_id){
-              $direccion .= ' ' . $row->direccion->estado->nombre;
+              $direccion .= ' ' . $row->direccion->estado->descripcion;
             }
           }
           return $direccion;

@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\exportaExcel;
 use App\Models\Direccion;
-use App\Models\Estado;
-use App\Models\Municipio;
+use App\Models\ApiEstado;
+use App\Models\ApiMunicipio;
 use Yajra\DataTables\Facades\DataTables;
 
 class Fianza_chequeController extends Controller
@@ -24,8 +24,8 @@ class Fianza_chequeController extends Controller
    */
   public function index()
   {
-    $estados = Estado::where('activo', 1)->get();
-    $municipios = Municipio::where('activo', 1)->get();
+    $estados = ApiEstado::get();
+    $municipios = ApiMunicipio::get();
     $afianzadoras = Afianzadora::where('activo', 1)->get();
     $estatus = Estatus::where('activo', 1)->get();
     $tipos = Tipo::where('activo', 1)->get();

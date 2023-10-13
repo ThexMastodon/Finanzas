@@ -3,8 +3,12 @@
 namespace App\Helpers;
 
 use App\Models\Colonia;
+use GuzzleHttp\Psr7\HttpFactory;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Http;
+use App\Models\ApiColonia;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 class AddressHelper
 {
   public static function searchCP($codigo_postal)
@@ -31,5 +35,34 @@ class AddressHelper
     }
 
     return null;
+  }
+
+  public static function searchColonias($codigo_postal)
+  {
+    $apipi = Request::create('/api/colonias/'.$codigo_postal, 'GET');
+
+    $cp = Route::dispatch($apipi)->getContent();
+
+    $data = json_decode($cp, true);
+
+    $colonias = $data['colonia'];
+
+    $direcciones = [];
+
+    foreach ($colonias as $colonia) {
+      $direccion = [
+        'colonia' => $colonia['descripcion'],
+        'colonia_id' => $colonia['id'],
+        'municipio' => $colonia['municipio'],
+        'municipio_id' => $colonia['municipio_id'],
+        'estado' => $colonia['estado'],
+        'estado_id' => $colonia['estado_id'],
+      ];
+
+      $direcciones[] = $direccion;
+    }
+
+    return $direcciones;
+
   }
 }

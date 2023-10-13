@@ -440,7 +440,7 @@
           $("#colonia").empty();
           $("#colonia").append(`<option id="" value="">Seleccionar Colonia</option>`);
           $.each(response, function(key, value) {
-            $("#colonia").append(`<option id="${value.id}" value="${value.id}">${value.colonia}</option>`);
+            $("#colonia").append(`<option id="${value.id}" value="${value.id}">${value.descripcion}</option>`);
           });
           $('#colonia').select2({
             theme: 'bootstrap4',
@@ -489,7 +489,7 @@
           $("#municipio").empty();
           $("#municipio").append(`<option id="" value="">Seleccionar Municipio</option>`);
           $.each(response, function(key, value) {
-            $("#municipio").append(`<option id="${value.id}" value="${value.id}">${value.nombre}</option>`);
+            $("#municipio").append(`<option id="${value.id}" value="${value.id}">${value.descripcion}</option>`);
           });
           $('#municipio').select2({
             theme: 'bootstrap4',
