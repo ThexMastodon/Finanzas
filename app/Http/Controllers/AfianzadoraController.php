@@ -327,7 +327,6 @@ class AfianzadoraController extends Controller
 
     if ($request->ajax()) {
       $query = Afianzadora::with('direccion.estado','direccion.municipio','direccion.colonia', )->get();
-      log::debug(json_encode($query, JSON_PRETTY_PRINT));
       $x = DataTables::of($query)
         ->addIndexColumn()
         ->addColumn('direccion', function ($row) {

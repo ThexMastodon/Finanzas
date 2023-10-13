@@ -24,7 +24,3 @@ Route::controller(\App\Http\Controllers\ApiController::class)->group(function ()
   Route::get('/municipios/{id}', 'municipio')->name('api.municipio');
   Route::get('/colonias/{id}', 'colonia')->name('api.colonia');
 });
-
-Route::get('/test', function (Request $request) {
-  log::debug('Test');
-});
