@@ -14,9 +14,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
-            EstadosSeeder::class,
-            MunicipiosSeeder::class,
-            ColoniasSeeder::class,
+            // EstadosSeeder::class,
+            // MunicipiosSeeder::class,
+            // ColoniasSeeder::class,
             RolesSeeder::class,
             ModulosSeeder::class,
             SubmodulosSeeder::class,
