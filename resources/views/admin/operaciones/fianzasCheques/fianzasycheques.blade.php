@@ -441,7 +441,9 @@
           $("#colonia").append(`<option id="" value="">Seleccionar Colonia</option>`);
           $.each(response, function(key, value) {
             $("#colonia").append(`<option id="${value.id}" value="${value.id}">${value.descripcion}</option>`);
+
           });
+
           $('#colonia').select2({
             theme: 'bootstrap4',
           });

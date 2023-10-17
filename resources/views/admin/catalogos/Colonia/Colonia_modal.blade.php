@@ -16,7 +16,7 @@
               <select id="estado" name="estado" style="width: 100%" class="form-select select2">
               <option value="">Seleccionar estado</option>
               @foreach ($estados as $estado)
-              <option value="{{ $estado->id }}" data-id="{{ $estado->id }}"> {{ $estado->nombre }}</option>
+              <option value="{{ $estado->id }}" data-id="{{ $estado->id }}"> {{ $estado->descripcion }}</option>
               @endforeach
               </select>
               <span id="estado_error" class="invalid-feedback" role="alert"></span>
@@ -26,7 +26,7 @@
               <select id="municipio" name="municipio" style="width: 100%" class="form-select select2">
                 <option value="">Seleccionar municipio</option>
                 @foreach ($municipios as $municipio)
-                <option value="{{ $municipio->id }}" data-id="{{ $municipio->id }}"> {{ $municipio->nombre }}</option>
+                <option value="{{ $municipio->id }}" data-id="{{ $municipio->id }}"> {{ $municipio->descripcion }}</option>
                 @endforeach
               </select>
               <span id="municipio_error" class="invalid-feedback" role="alert"></span>

@@ -36,7 +36,6 @@
                       <tr>
                         <th>ID</th>
                         <th>Nombre</th>
-
                         <th>Codigo Postal</th>
                         <th>Estado</th>
                         <th>Municipio</th>
@@ -97,7 +96,7 @@
         success: function(response) {
           $('#estado').val(response.estado_id).trigger('change');
           $('#municipio').val(response.municipio_id).trigger('change');
-          $('#colonia').val(response.colonia);
+          $('#colonia').val(response.descripcion);
           $('#codigo_postal').val(response.codigo_postal);
           $('#coloniaV').val(response.id);
           $('#modal_colonia').modal('show');
@@ -205,7 +204,6 @@
       })
     });
 
-
     $('#Table_Colonias').DataTable({
       processing: true,
       serverSide: true,
@@ -215,8 +213,8 @@
           name: 'id',
         },
         {
-          data: 'colonia',
-          name: 'colonia',
+          data: 'descripcion',
+          name: 'descripcion',
         },
         {
           data: 'codigo_postal',
@@ -264,6 +262,54 @@
           "sortDescending": ": activar para ordenar la columna descendente"
         }
       }
+    });
+
+    $('#estado').on('change', function() {
+      var estado = $('#estado').val();
+      var tipoPeticion = $('#tipoPeticion').val();
+      $.ajax({
+        url: "{{ route('getMunicipios') }}",
+        type: "GET",
+        data: {
+          "_token": "{{ csrf_token() }}",
+          "estado": estado,
+        },
+        dataType: 'json',
+        beforeSend: function() {
+          let timerInterval
+          Swal.fire({
+            title: '{{__("Buscando Municipios...")}}',
+            html: ' <b></b>',
+            allowOutsideClick: false,
+            timer: 500,
+            timerProgressBar: true,
+            didOpen: () => {
+              Swal.showLoading()
+            }
+          });
+        },
+        success: function(response) {
+          $("#municipio").empty();
+          $("#municipio").append(`<option id="" value="">Seleccionar Municipio</option>`);
+          $.each(response, function(key, value) {
+            $("#municipio").append(`<option id="${value.id}" value="${value.id}">${value.descripcion}</option>`);
+          });
+          $('#municipio').select2({
+            theme: 'bootstrap4',
+          });
+          if (tipoPeticion === 'Editar') {
+            $('#municipio').val($('#municipioEditV').val()).trigger("change");
+          }
+        },
+        error: function(data) {
+          Swal.fire({
+            icon: 'error',
+            title: "{{ __('Error!') }}",
+            text: 'No se pudo obtener municipios.',
+            confirmButtonText: "{{ __('Aceptar') }}",
+          });
+        }
+      });
     });
 
 

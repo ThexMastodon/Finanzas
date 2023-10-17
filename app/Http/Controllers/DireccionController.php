@@ -4,18 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Direccion;
-use App\Models\Estado;
-use App\Models\Municipio;
+use App\Models\ApiEstado;
+use App\Models\ApiMunicipio;
 use App\Models\Colonia;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use App\Models\ApiColonia;
+
 
 class DireccionController extends Controller
 {
   public function index()
   {
-    $estados = Estado::all();
-    $municipios = Municipio::all();
+    $estados = ApiEstado::all();
+    $municipios = ApiMunicipio::all();
     $datos = Direccion::with('municipio', 'estado', 'colonia')->get();
 
     return view('admin.catalogos.Direccion.Direccion', [
@@ -32,7 +34,7 @@ class DireccionController extends Controller
 
   public function getColonias(Request $request)
   {
-    $colonias = Colonia::where('municipio_id', $request->municipio)->get();
+    $colonias = ApiColonia::where('municipio_id', $request->municipio)->get();
     return response()->json($colonias);
   }
 

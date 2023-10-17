@@ -17,4 +17,9 @@ class ApiEstado extends Model
     'clave',
     'descripcion'
   ];
+
+  public function municipios()
+{
+    return $this->hasMany(ApiMunicipio::class, 'estado_id');
+}
 }

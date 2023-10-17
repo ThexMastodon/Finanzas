@@ -46,7 +46,7 @@
                       @foreach ($datos as $dato)
                       <tr>
                         <td>{{ $dato->id }}</td>
-                        <td>{{ $dato->nombre }}</td>
+                        <td>{{ $dato->descripcion }}</td>
 
                         @if ($dato->activo == 1)
                         <td style="text-align: center; color: #32CD32"><i class="fas fa-check"></i></td>
@@ -177,7 +177,7 @@
         },
         dataType: 'json',
         success: function(response) {
-          $('#nombre').val(response.nombre);
+          $('#nombre').val(response.descripcion);
           $('#estado_id').val(response.estado_id).trigger('change');
           $('#modal_municipio').modal('show');
         },

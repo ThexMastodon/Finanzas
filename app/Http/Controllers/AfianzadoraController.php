@@ -115,7 +115,7 @@ class AfianzadoraController extends Controller
   public function getColonias(Request $request)
   {
     $colonias = ApiColonia::where('municipio_id', $request->municipio)->get();
-    return response()->json($colonias);
+    return response()->json($colonias)->header('Content-Type', 'application/json; charset=UTF-8');
   }
 
   public function getMunicipios(Request $request)

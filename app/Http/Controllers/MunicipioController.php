@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Municipio;
-use App\Models\Estado;
+use App\Models\ApiMunicipio;
+use App\Models\ApiEstado;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -12,14 +12,15 @@ class MunicipioController extends Controller
 {
     public function index()
     {
-      $datos = Municipio::select('municipios.*',)
+      $datos = ApiMunicipio::select('catalogo_municipios_api.*',)
       ->get();
-      $estados = Estado::select('estados.*',)
+      $estados = ApiEstado::select('catalogo_estados_api.*',)
 			->get();
 
       return view('admin.catalogos.Municipio.Municipio', ['datos' => $datos,'estados'=>$estados,]);
 
     }
+
     public function store(Request $request)
     {
       $customMessages = [
@@ -32,8 +33,8 @@ class MunicipioController extends Controller
       ], $customMessages);
       try{
         DB::beginTransaction();
-        Municipio::create([
-          'nombre' => $request->input('nombre'),
+        ApiMunicipio::create([
+          'descripcion' => $request->input('nombre'),
           'estado_id' => $request->input('estado_id'),
           'activo' => 1,
         ]);
@@ -60,11 +61,12 @@ class MunicipioController extends Controller
         return response($returnData);
       }
     }
+
     public function destroy(Request $id)
     {
       DB::beginTransaction();
       try{
-        $dato = Municipio::find($id)->first();
+        $dato = ApiMunicipio::find($id)->first();
         $dato->activo = $dato->activo == 0 ? 1 : 0;
         $dato->save();
 
@@ -104,9 +106,9 @@ class MunicipioController extends Controller
       try{
         DB::beginTransaction();
         $id = $request->input('idMunicipio');
-        $dato = Municipio::find($id);
+        $dato = ApiMunicipio::find($id);
 
-        $dato->nombre = $request->input('nombre');
+        $dato->descripcion = $request->input('nombre');
         $dato->save();
 
         DB::commit();
@@ -134,7 +136,7 @@ class MunicipioController extends Controller
 
     public function detalleMunicipio(Request $request)
     {
-      $municipio = Municipio::find($request->id);
+      $municipio = ApiMunicipio::find($request->id);
       return response()->json($municipio);
     }
 }

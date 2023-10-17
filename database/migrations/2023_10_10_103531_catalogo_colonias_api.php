@@ -15,6 +15,7 @@ return new class extends Migration
         $table->id();
         $table->string('descripcion', 255)->nullable(false);
         $table->string('codigo_postal', 7)->nullable(true);
+        $table->boolean('activo')->default(true);
 
         $table->unsignedBigInteger('municipio_id');
         $table->foreign('municipio_id')->references('id')->on('catalogo_municipios_api');

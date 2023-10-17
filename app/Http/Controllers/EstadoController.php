@@ -6,13 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-use App\Models\Estado;
+use App\Models\ApiEstado;
 
 class EstadoController extends Controller
 {
   public function index()
   {
-    $datos = Estado::select('estados.*',)
+    $datos = ApiEstado::select('catalogo_estados_api.*',)
       ->get();
 
     return view('admin.catalogos.Estado.Estado', ['datos' => $datos]);
@@ -29,8 +29,8 @@ class EstadoController extends Controller
     ], $customMessages);
     try{
       DB::beginTransaction();
-      Estado::create([
-        'nombre' => $request->input('nombre'),
+      $estado = ApiEstado::create([
+        'descripcion' => $request->input('nombre'),
         'activo' => 1,
       ]);
 
@@ -39,7 +39,6 @@ class EstadoController extends Controller
         'title' => 'Éxito',
         'message' => 'Operación realizada correctamente.'
       );
-      //return redirect('/admin/catalogos/Estado');
       DB::commit();
 
       return response($returnData);
@@ -56,14 +55,12 @@ class EstadoController extends Controller
 
       return response($returnData);
     }
-
-
   }
 
   public function destroy(Request $id)
   {
     try {
-      $dato = Estado::find($id)->first();
+      $dato = ApiEstado::find($id)->first();
       $dato->activo = $dato->activo == 0 ? 1 : 0;
       $dato->save();
 
@@ -86,6 +83,7 @@ class EstadoController extends Controller
       return response($returnData);
     }
   }
+
   public function update(Request $request)
   {
     $customMessages = [
@@ -99,10 +97,9 @@ class EstadoController extends Controller
     try {
       DB::beginTransaction();
       $id = $request->input('idEstado');
-      $dato = Estado::find($id);
-      log::debug($id);
+      $dato = ApiEstado::find($id);
 
-      $dato->nombre = $request->input('nombre');
+      $dato->descripcion = $request->input('nombre');
       $dato->save();
 
       DB::commit();
@@ -129,7 +126,7 @@ class EstadoController extends Controller
 
   public function detalleEstado(Request $request)
   {
-    $estado = Estado::find($request->id);
+    $estado = ApiEstado::find($request->id);
     return response()->json($estado);
   }
 }

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Colonia;
-use App\Models\Municipio;
-use App\Models\Estado;
+use App\Models\ApiColonia;
+use App\Models\ApiMunicipio;
+use App\Models\ApiEstado;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
@@ -14,23 +14,21 @@ class ColoniaController extends Controller
 {
   public function index()
   {
-    $estados = Estado::select('estados.*',)->get();
-    $municipios = Municipio::select('municipios.*',)->get();
+    $estados = ApiEstado::select('catalogo_estados_api.*',)->get();
+    $municipios = ApiMunicipio::select('catalogo_municipios_api.*',)->get();
 
     return view('admin.catalogos.Colonia.Colonia', ['estados' => $estados, 'municipios' => $municipios,]);
   }
 
-  public function llenadoTableColonias(Request $request)
+  private function tableServerSide($query)
   {
-    if ($request->ajax()) {
-      $query = Colonia::with('municipio', 'estado')->get();
-      $x = DataTables::of($query)
+    $x = DataTables::of($query)
         ->addIndexColumn()
         ->addColumn('estado', function ($row) {
-          return $row->estado->nombre ?? '';
+          return $row->municipio->estado->descripcion ?? '';
         })
         ->addColumn('municipio', function ($row) {
-          return $row->municipio->nombre ?? '';
+          return $row->municipio->descripcion ?? '';
         })
         ->addColumn('activo', function ($row) {
           $activo = $row->activo == 1 ? '<i style="text-align: center; color: #32CD32" class="fas fa-check"></i>' : '<i style="text-align: center; color: red" class="fas fa-times"></i>';
@@ -58,13 +56,38 @@ class ColoniaController extends Controller
         ->rawColumns(['estado', 'municipio','activo','acciones'])
         ->make(true);
       return $x;
+  }
+
+  public function llenadoTableColonias(Request $request)
+  {
+    if ($request->ajax()) {
+      $query = ApiColonia::with('municipio.estado')->get();
+
+      if ($request->input('search')['value'] != null) {
+        $x = $this->tableServerSide($query);
+        return $x;
+      }
+
+      $m = cache()->remember('consultaColonias_' . $request->input('start'), 300, function () use ($query) {
+        return $this->tableServerSide($query);
+      });
+
+      if (cache()->has('consultaColonias_' . $request->input('start'))) {
+        $jsonResponse  = cache()->get('consultaColonias_' . $request->input('start'));
+        $responseData = json_decode($jsonResponse->getContent(), true);
+        $newDrawValue = $request->input('draw');
+        $responseData['draw'] = $newDrawValue;
+        $jsonUpdatedResponse = json_encode($responseData);
+        return \response()->json()->fromJsonString($jsonUpdatedResponse);
+      }
+
     }
 
   }
 
   public function detalleColonia(Request $request)
   {
-    $afianzadora = Colonia::find($request->id);
+    $afianzadora = ApiColonia::find($request->id);
     return response()->json($afianzadora);
   }
 
@@ -87,10 +110,9 @@ class ColoniaController extends Controller
 
     try {
       DB::beginTransaction();
-      Colonia::create([
-        'colonia' => $request->colonia,
+      ApiColonia::create([
+        'descripcion' => $request->colonia,
         'codigo_postal' => $request->codigo_postal,
-        'estado_id' => $request->estado,
         'municipio_id' => $request->municipio,
         'activo' => 1,
       ]);
@@ -117,7 +139,7 @@ class ColoniaController extends Controller
   {
     try {
       DB::beginTransaction();
-      $dato = Colonia::find($id)->first();
+      $dato = ApiColonia::find($id)->first();
       $dato->activo = 0;
       $dato->save();
       DB::commit();
@@ -162,11 +184,10 @@ class ColoniaController extends Controller
     try {
       DB::beginTransaction();
       $id = $request->idColonia;
-      $dato = Colonia::find($id);
-      $dato->colonia = $request->colonia;
+      $dato = ApiColonia::find($id);
+      $dato->descripcion = $request->colonia;
       $dato->codigo_postal = $request->codigo_postal;
       $dato->municipio_id = $request->municipio;
-      $dato->estado_id = $request->estado;
       $dato->save();
       DB::commit();
 

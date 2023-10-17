@@ -18,4 +18,10 @@ class ApiColonia extends Model
     'descripcion',
     'codigo_postal'
   ];
+
+  public function municipio()
+    {
+      return $this->belongsTo(ApiMunicipio::class, 'municipio_id');
+    }
+
 }

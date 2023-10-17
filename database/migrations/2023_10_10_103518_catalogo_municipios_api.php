@@ -13,8 +13,9 @@ return new class extends Migration
     {
       Schema::create('catalogo_municipios_api', function (Blueprint $table) {
         $table->id();
-        $table->string('clave', 12);
+        $table->string('clave', 12)->nullable(true);
         $table->string('descripcion', 255)->nullable(false);
+        $table->boolean('activo')->default(true);
 
         $table->unsignedBigInteger('estado_id');
         $table->foreign('estado_id')->references('id')->on('catalogo_estados_api');

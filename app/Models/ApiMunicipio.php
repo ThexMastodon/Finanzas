@@ -17,4 +17,9 @@ class ApiMunicipio extends Model
     'clave',
     'descripcion'
   ];
+
+  public function estado()
+{
+    return $this->belongsTo(ApiEstado::class, 'estado_id');
+}
 }

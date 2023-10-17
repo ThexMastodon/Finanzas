@@ -20,7 +20,7 @@
               <label for="inputEstado">Estado</label>
               <select id="estado_id" name="estado_id" class="form-control select2">
                 @foreach ($estados as $estado)
-                <option value="{{ $estado->id }}"> {{ $estado->nombre }}</option>
+                <option value="{{ $estado->id }}"> {{ $estado->descripcion }}</option>
                 @endforeach
               </select>
               <span id="estado_id_error" class="invalid-feedback" role="alert"></span>

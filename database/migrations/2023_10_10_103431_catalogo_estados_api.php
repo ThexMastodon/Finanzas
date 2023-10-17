@@ -13,9 +13,10 @@ return new class extends Migration
     {
       Schema::create('catalogo_estados_api', function (Blueprint $table) {
         $table->id();
-        $table->string('estado_id', 3)->unique();
-        $table->string('clave', 5)->unique();
+        $table->string('estado_id', 3)->unique()->nullable(true);
+        $table->string('clave', 5)->unique()->nullable(true);
         $table->string('descripcion', 255)->nullable(false);
+        $table->boolean('activo')->default(true);
 
         $table->timestamps();
       });

@@ -19,16 +19,15 @@
           </div>
         </div>
       </section>
+
       <section class="content">
         <div class="container-fluid">
-
           <div class="content-btn">
             <a @can('crear direccion') class="btn btn-primary" @else class="btn btn-primary disabled" @endcan id="btn-nuevo" data-togle="modal" data-target="#modal-add" data-product=1>
               <i class="far fa-file-alt"></i>
               Nuevo
             </a>
           </div>
-
           <div class="row">
             <div class="col-12">
               <div class="card">
@@ -50,27 +49,27 @@
                     </thead>
                     <tbody class="tableBody">
                       @foreach ($datos as $dato)
-                      <tr>
-                        <td>{{ $dato->id }}</td>
-                        <td>{{ $dato->estado->nombre ?? ''}}</td>
-                        <td>{{ $dato->municipio->nombre ?? ''}}</td>
-                        <td>{{ $dato->colonia->colonia ?? ''}}</td>
-                        <td>{{ $dato->calle ?? ''}}</td>
-                        <td>{{ $dato->codigo_postal ?? ''}}</td>
-                        <td>{{ $dato->no_exterior ?? ''}}</td>
-                        <td>{{ $dato->no_interior ?? ''}}</td>
-                        <td>{{ $dato->referencia ?? ''}}</td>
-                        <td style="text-align: center">
-                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            Acciones
-                          </button>
-                          <div class="dropdown-menu">
-                            <a id="btn-Editar" @can('Editar direccion') class="dropdown-item btn-edit" @else class="dropdown-item btn-edit disabled" @endcan href="" data-id="{{ $dato->id }}"><i class="fas fa-pencil-alt text-warning"></i> Editar</a>
-                            <div class="dropdown-divider"></div>
-                            <a @can('Eliminar direccion') class="dropdown-item btn-delete disabled" @else class="dropdown-item btn-delete disabled" @endcan href="/admin/catalogos/Direcciones_delete/{{$dato->id}}"><i class="fas fa-trash-alt text-danger"></i> Deshabilitar</a>
-                          </div>
-                        </td>
-                      </tr>
+                        <tr>
+                          <td>{{ $dato->id }}</td>
+                          <td>{{ $dato->estado->descripcion ?? ''}}</td>
+                          <td>{{ $dato->municipio->descripcion ?? ''}}</td>
+                          <td>{{ $dato->colonia->descripcion ?? ''}}</td>
+                          <td>{{ $dato->calle ?? ''}}</td>
+                          <td>{{ $dato->codigo_postal ?? ''}}</td>
+                          <td>{{ $dato->no_exterior ?? ''}}</td>
+                          <td>{{ $dato->no_interior ?? ''}}</td>
+                          <td>{{ $dato->referencia ?? ''}}</td>
+                          <td style="text-align: center">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                              Acciones
+                            </button>
+                            <div class="dropdown-menu">
+                              <a id="btn-Editar" @can('Editar direccion') class="dropdown-item btn-edit" @else class="dropdown-item btn-edit disabled" @endcan href="" data-id="{{ $dato->id }}"><i class="fas fa-pencil-alt text-warning"></i> Editar</a>
+                              <div class="dropdown-divider"></div>
+                              <a @can('Eliminar direccion') class="dropdown-item btn-delete disabled" @else class="dropdown-item btn-delete disabled" @endcan href="/admin/catalogos/Direcciones_delete/{{$dato->id}}"><i class="fas fa-trash-alt text-danger"></i> Deshabilitar</a>
+                            </div>
+                          </td>
+                        </tr>
                       @endforeach
                     </tbody>
                   </table>
@@ -295,7 +294,7 @@
           $("#colonia").empty();
           $("#colonia").append(`<option id="" value="">Seleccionar Colonia</option>`);
           $.each(response, function(key, value) {
-            $("#colonia").append(`<option id="${value.id}" value="${value.id}">${value.colonia}</option>`);
+            $("#colonia").append(`<option id="${value.id}" value="${value.id}">${value.descripcion}</option>`);
           });
           if (tipoPeticion === 'Editar') {
             $('#colonia').val($('#coloniaV').val()).trigger("change");

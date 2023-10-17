@@ -26,7 +26,7 @@
                 <select id="municipio" name="municipio" style="width: 100%" class="form-select select2">
                   <option value="">Seleccionar municipio</option>
                   @foreach ($municipios as $municipio)
-                  <option value="{{ $municipio->id }}" data-id="{{ $municipio->id }}"> {{ $municipio->nombre }}</option>
+                  <option value="{{ $municipio->id }}" data-id="{{ $municipio->id }}"> {{ $municipio->descripcion }}</option>
                   @endforeach
                 </select>
                 <span id="municipio_error" class="invalid-feedback" role="alert"></span>
