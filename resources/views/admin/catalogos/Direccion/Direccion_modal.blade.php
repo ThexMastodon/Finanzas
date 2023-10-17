@@ -68,10 +68,9 @@
           <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="limpiarCampos()">Cancelar</button>
           <button id="AceptarForm" type="button" class="btn btn-primary">Aceptar</button>
         </div>
+      </div>
     </form>
   </div>
-</div>
-</div>
 </div>
 
 

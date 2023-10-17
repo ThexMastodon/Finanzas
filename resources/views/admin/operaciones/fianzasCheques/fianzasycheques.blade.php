@@ -115,16 +115,7 @@
   var table = $('#fianzasChequesTable').DataTable({
     processing: true,
     serverSide: true,
-    buttons: [{
-      extend: 'excel',
-      text: 'Exportar a Excel',
-      className: 'btn btn-success',
-      title: 'Afianzadoras',
-      exportOptions: {
-        columns: [0, 1, 2, 3]
-      },
-    }],
-    ordering: false,
+    ordering: true,
     ajax: {
       url: "{{ route('llenadoTableFianzasCheques') }}",
       type: "POST", // Cambiamos el tipo de petición
