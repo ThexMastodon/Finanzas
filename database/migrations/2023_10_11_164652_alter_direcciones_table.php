@@ -12,6 +12,10 @@ return new class extends Migration
   public function up(): void
   {
     Schema::table('direcciones', function (Blueprint $table) {
+      $table->dropForeign(['municipio_id']);
+      $table->dropForeign(['estado_id']);
+      $table->dropForeign(['colonia_id']);
+
       $table->unsignedBigInteger('municipio_id')->nullable()->change();
       $table->unsignedBigInteger('estado_id')->nullable()->change();
       $table->unsignedBigInteger('colonia_id')->nullable()->change();
