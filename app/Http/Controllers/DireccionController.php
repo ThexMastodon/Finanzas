@@ -40,14 +40,15 @@ class DireccionController extends Controller
   {
     $customMessages = [
       'required' => 'El campo no puede ir vacio',
+      'unique' => 'La direción ya se encuentra registrada',
     ];
 
     $request->validate([
       'codigo_postal' => 'required | max:5',
       'municipio' => 'required',
       'colonia' => 'required',
-      'calle' => 'required',
-      'no_exterior' => 'required',
+      'calle' => 'required | unique:direcciones',
+      'no_exterior' => 'required | unique:direcciones',
     ], $customMessages);
     try {
       DB::beginTransaction();
@@ -97,14 +98,15 @@ class DireccionController extends Controller
   {
     $customMessages = [
       'required' => 'El campo no puede ir vacio',
+      'unique' => 'La dirección ya se encuentra registrada',
     ];
 
     $request->validate([
       'codigo_postal' => 'required | max:5',
       'municipio' => 'required',
       'colonia' => 'required',
-      'calle' => 'required',
-      'no_exterior' => 'required',
+      'calle' => 'required | unique:direcciones, calle,'.$request->idDireccion,
+      'no_exterior' => 'required | unique:direcciones,no_exterior,'.$request->idDireccion,
     ], $customMessages);
     try {
       DB::beginTransaction();

@@ -216,7 +216,7 @@
           Swal.fire({
             icon: 'error',
             title: "{{ __('Error!') }}",
-            text: 'La dirección no se agregó correctamente',
+            text: 'El estatus no se agregó correctamente',
             confirmButtonText: "{{ __('Aceptar') }}",
           });
         }

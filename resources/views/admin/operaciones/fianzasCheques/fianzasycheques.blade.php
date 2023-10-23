@@ -553,9 +553,9 @@
           $.each(data.responseJSON.errors, function(key, value) {
             mensaje =
               'Hubo un error, no se pudo registrar el módulo. Debe revisar que los datos capturados sean válidos.'
-            $("#modal_afianzadoras").find("#" + key).addClass('is-invalid');
-            $("#modal_afianzadoras").find("#" + key + '_error').addClass('d-block');
-            $("#modal_afianzadoras").find("#" + key + '_error').html('<strong>' + value + '</strong>');
+            $("#modal-FC").find("#" + key).addClass('is-invalid');
+            $("#modal-FC").find("#" + key + '_error').addClass('d-block');
+            $("#modal-FC").find("#" + key + '_error').html('<strong>' + value + '</strong>');
           });
           Swal.fire({
             icon: 'error',

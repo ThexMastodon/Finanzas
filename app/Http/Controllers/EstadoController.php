@@ -22,10 +22,11 @@ class EstadoController extends Controller
   {
     $customMessages = [
       'required' => 'El campo no puede ir vacio',
+      'unique' => 'El estado ya se encuentra  registrado',
     ];
 
     $request->validate([
-      'nombre' => 'required',
+      'nombre' => 'required | unique:estados',
     ], $customMessages);
     try{
       DB::beginTransaction();
@@ -90,10 +91,11 @@ class EstadoController extends Controller
   {
     $customMessages = [
       'required' => 'El campo no puede ir vacio',
+      'unique' => 'El estado ya se encuentra registrada',
     ];
 
     $request->validate([
-      'nombre' => 'required',
+      'nombre' => 'required | unique:estados,nombre,'.$request->id,
     ], $customMessages);
 
     try {

@@ -24,10 +24,11 @@ class MunicipioController extends Controller
     {
       $customMessages = [
         'required' => 'El campo no puede ir vacio',
+        'unique' => 'El municipio ya se encuentra registrado',
       ];
 
       $request->validate([
-        'nombre' => 'required',
+        'nombre' => 'required | unique:municipios',
         'estado_id' => 'required',
       ], $customMessages);
       try{
@@ -94,10 +95,11 @@ class MunicipioController extends Controller
     {
       $customMessages = [
         'required' => 'El campo no puede ir vacio',
+        'unique' => 'El municipio ya se encuentra registrado',
       ];
 
       $request->validate([
-        'nombre' => 'required',
+        'nombre' => 'required | unique:municipios,nombre,' .$request->idMunicipio,
         'estado_id' => 'required',
       ], $customMessages);
 

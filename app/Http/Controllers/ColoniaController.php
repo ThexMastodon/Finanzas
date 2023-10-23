@@ -75,6 +75,7 @@ class ColoniaController extends Controller
       'max' => 'El campo no puede tener mas de :max caracteres',
       'digits' => 'El campo debe tener :digits caracteres',
       'numeric' => 'El campo solo puede contener numeros',
+      'unique' => 'La colonia ya se encuentra registrada',
 
     ];
 
@@ -82,7 +83,7 @@ class ColoniaController extends Controller
       'codigo_postal' => 'required | digits:5 | numeric',
       'estado' => 'required',
       'municipio' => 'required',
-      'colonia' => 'required',
+      'colonia' => 'required | unique:colonias',
     ], $customMessages);
 
     try {
@@ -150,6 +151,7 @@ class ColoniaController extends Controller
       'max' => 'El campo no puede tener mas de :max caracteres',
       'digits' => 'El campo debe tener :digits caracteres',
       'numeric' => 'El campo solo puede contener numeros',
+      'unique' => 'La colonia ya se encuentra registrada',
 
     ];
 
@@ -157,7 +159,7 @@ class ColoniaController extends Controller
       'codigo_postal' => 'required | digits:5 | numeric',
       'estado' => 'required',
       'municipio' => 'required',
-      'colonia' => 'required',
+      'colonia' => 'required | unique:colonias,colonia,'.$request->idColonia,
     ], $customMessages);
     try {
       DB::beginTransaction();

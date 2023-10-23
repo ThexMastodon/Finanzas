@@ -192,6 +192,7 @@ class Fianza_chequeController extends Controller
   {
     $customMessages = [
       'required' => 'El campo no puede ir vacio',
+      'unique' => 'El No. de Fianza/Cheque ya se encuentra registrado',
     ];
 
     // VALIDACION para pedir apellidos en persona fisica
@@ -204,7 +205,7 @@ class Fianza_chequeController extends Controller
     }
 
     $request->validate([
-      'fianza_cheque' => 'required',
+      'fianza_cheque' => 'required | unique:fianza_cheques,no_fianza_cheque',
       'afianzadora' => 'required',
       'tipo' => 'required',
       'tipo_persona' => 'required',
@@ -305,6 +306,7 @@ class Fianza_chequeController extends Controller
 
     $customMessages = [
       'required' => 'El campo no puede ir vacio',
+      'unique' => 'El No. de Fianza/Cheque ya se encuentra registrado',
     ];
 
     if ($request->nombreHistorico) {
@@ -326,7 +328,7 @@ class Fianza_chequeController extends Controller
     }
 
     $request->validate([
-      'fianza_cheque' => 'required',
+      'fianza_cheque' => 'required | unique:fianza_cheques,no_fianza_cheque',
       'afianzadora' => 'required',
       'tipo' => 'required',
       'tipo_persona' => 'required',

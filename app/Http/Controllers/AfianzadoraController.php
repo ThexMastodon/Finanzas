@@ -135,10 +135,11 @@ class AfianzadoraController extends Controller
       'digits' => 'El campo debe tener :digits caracteres',
       'numeric' => 'El campo solo puede contener numeros',
       'max' => 'El campo no puede tener más de :max caracteres',
+      'unique' => 'La afianzadora ya se encuentra registrada',
     ];
 
     $request->validate([
-      'nombre' => 'required',
+      'nombre' => 'required | unique:afianzadoras',
     ], $customMessages);
 
     try {
@@ -219,10 +220,11 @@ class AfianzadoraController extends Controller
       'digits' => 'El campo debe tener :digits caracteres',
       'numeric' => 'El campo solo puede contener numeros',
       'max' => 'El campo no puede tener más de :max caracteres',
+      'unique' => ' La afianzadora ya se encuentra registrada',
     ];
 
     $request->validate([
-      'nombre' => 'required',
+      'nombre' => 'required | unique:afianzadoras,nombre,'.$request->idAfianzadora,
     ], $customMessages);
 
     try {
@@ -361,7 +363,7 @@ class AfianzadoraController extends Controller
                             <div class="dropdown-divider"></div>
 
                             <a id="btn-deshabilitarAfianzadora" @can("Eliminar afianzadoras") class="dropdown-item btn-delete" @else class="dropdown-item btn-delete disabled" @endcan href="" data-id=' . $row->id . '>
-                              <i class="fas fa-trash-alt text-danger"></i> Eliminar</a>
+                              <i class="fas fa-trash-alt text-danger"></i> Deshabilitar</a>
                           </div>
           ';
           return $btn;

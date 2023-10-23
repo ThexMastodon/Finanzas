@@ -21,9 +21,10 @@ class TipoController extends Controller
   {
     $customMessages = [
       'required' => 'El campo no puede ir vacio',
+      'unique' => 'El tipo ya se encuentra registrado',
     ];
     $request->validate([
-      'descripcion' => 'required',
+      'descripcion' => 'required | unique:tipo',
     ], $customMessages);
 
     try {
@@ -90,9 +91,10 @@ class TipoController extends Controller
   {
     $customMessages = [
       'required' => 'El campo no puede ir vacio',
+      'unique' => 'EL tipo ya se encuentra registrado',
     ];
     $request->validate([
-      'descripcion' => 'required',
+      'descripcion' => 'required | unique:tipo,descripcion,'.$request->idTipo,
     ], $customMessages);
 
     try {
